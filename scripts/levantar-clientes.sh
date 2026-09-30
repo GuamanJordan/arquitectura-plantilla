@@ -97,7 +97,7 @@ cliente_consola_java() {
   (
     cd clientes/consola-java &&
     mvn -q -DskipTests package &&
-    java -jar target/cliente-consola-java-1.0.0.jar --server "$DOTNET_REST_BASE"
+    java -jar target/cliente-consola-java-1.0.0.jar --server "$JAKARTA_REST_BASE"
   )
 }
 
@@ -131,7 +131,7 @@ cliente_escritorio_java() {
     cd clientes/escritorio-java &&
     mvn -q -DskipTests package
   )
-  nohup java -jar clientes/escritorio-java/target/cliente-escritorio-java-1.0.0.jar "$DOTNET_REST_BASE" > "$RUNTIME_DIR/escritorio-java.log" 2>&1 &
+  nohup java -jar clientes/escritorio-java/target/cliente-escritorio-java-1.0.0.jar "$JAKARTA_REST_BASE" > "$RUNTIME_DIR/escritorio-java.log" 2>&1 &
   local pid=$!
   registrar_pid "$pid" "escritorio-java"
   echo "Cliente escritorio Java iniciado. Log: $RUNTIME_DIR/escritorio-java.log"

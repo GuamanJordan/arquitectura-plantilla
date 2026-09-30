@@ -2,6 +2,61 @@
 
 Esta guia sirve cuando una computadora levanta los servicios y otra computadora ejecuta los clientes.
 
+## Contexto probado en laboratorio
+
+En la sesion de referencia se uso esta IP de servidor:
+
+```text
+192.168.100.13
+```
+
+Si la IP cambia, reemplazar `192.168.100.13` por la nueva IP que entregue:
+
+```bash
+hostname -I
+```
+
+Servicios que quedaron levantados y probados:
+
+```text
+.NET REST:
+http://192.168.100.13:5100/api/productos
+
+.NET gRPC:
+http://192.168.100.13:50051
+
+GlassFish Jakarta REST:
+http://192.168.100.13:8082/jakarta-rest-glassfish/api/productos
+
+Payara aplicacion web MVC:
+http://192.168.100.13:8081/jakarta-mvc-payara/login
+```
+
+Credenciales de la aplicacion web MVC:
+
+```text
+admin / admin
+cliente / cliente
+```
+
+Puertos minimos que deben permitir conexiones desde otras maquinas:
+
+```text
+5100   API REST .NET
+50051  gRPC .NET
+8082   GlassFish REST/SOAP
+8081   Payara aplicacion web MVC
+```
+
+Si UFW esta activo en el servidor:
+
+```bash
+sudo ufw allow 5100
+sudo ufw allow 50051
+sudo ufw allow 8082
+sudo ufw allow 8081
+```
+
 ## 1. Computadora servidor
 
 Clonar el repositorio:
@@ -37,6 +92,8 @@ Probar en el servidor:
 
 ```bash
 curl http://localhost:5100/api/productos
+curl http://localhost:8082/jakarta-rest-glassfish/api/productos
+curl -I http://localhost:8081/jakarta-mvc-payara/login
 ```
 
 Si hay firewall activo, abrir como minimo estos puertos:
@@ -75,6 +132,7 @@ Probar conectividad:
 ```bash
 ./scripts/probar-red.sh 192.168.1.50
 curl http://192.168.1.50:5100/api/productos
+curl http://192.168.1.50:8082/jakarta-rest-glassfish/api/productos
 ```
 
 Levantar todos los clientes posibles desde esta computadora:
@@ -115,6 +173,15 @@ curl http://192.168.1.50:8082/jakarta-rest-glassfish/api/productos
 
 ## 4. Ejecutar clientes contra el servidor remoto
 
+Desde la maquina cliente, con el servidor probado en esta guia:
+
+```bash
+cp .env.example .env
+./scripts/configurar-cliente.sh 192.168.100.13
+./scripts/probar-red.sh 192.168.100.13
+./scripts/levantar-clientes.sh 192.168.100.13
+```
+
 Cliente consola Java:
 
 ```bash
@@ -152,6 +219,12 @@ cd clientes/web-dotnet
 SERVER_REST_URL=http://192.168.1.50:5100 dotnet run
 ```
 
+La web local del cliente .NET queda en:
+
+```text
+http://127.0.0.1:5200
+```
+
 Cliente web Java:
 
 ```bash
@@ -186,6 +259,8 @@ El telefono debe estar en la misma red Wi-Fi que el servidor y el firewall debe 
 - Servidor y cliente estan en la misma red.
 - El servidor responde a `curl http://localhost:5100/api/productos`.
 - Desde el cliente responde `curl http://IP_DEL_SERVIDOR:5100/api/productos`.
+- Desde el cliente responde `curl http://IP_DEL_SERVIDOR:8082/jakarta-rest-glassfish/api/productos`.
+- La web servidor abre en `http://IP_DEL_SERVIDOR:8081/jakarta-mvc-payara/login`.
 - `SERVER_HOST` en `.env` contiene la IP del servidor.
 - El firewall del servidor permite los puertos necesarios.
 - Los clientes usan `http://IP_DEL_SERVIDOR:PUERTO`, no `localhost`.
