@@ -4,21 +4,25 @@ using Grpc.Net.Client;
 
 var server = GetArg(args, "--server", "http://localhost:5100");
 var grpcServer = GetArg(args, "--grpc", "http://localhost:50051");
+var grpcOnly = args.Contains("--grpc-listar") && !args.Contains("--rest-listar") && !args.Contains("--crear");
 
-using var http = new HttpClient { BaseAddress = new Uri(server) };
-var productos = await http.GetFromJsonAsync<List<Producto>>("/api/productos");
-
-Console.WriteLine("Productos por REST:");
-foreach (var producto in productos ?? [])
+if (!grpcOnly)
 {
-    Console.WriteLine($"{producto.Id}: {producto.Nombre} - {producto.Precio:C}");
-}
+    using var http = new HttpClient { BaseAddress = new Uri(server) };
+    var productos = await http.GetFromJsonAsync<List<Producto>>("/api/productos");
 
-if (args.Contains("--crear"))
-{
-    var response = await http.PostAsJsonAsync("/api/productos", new ProductoInput("Producto .NET", "Creado desde consola", 25.50m, 7));
-    Console.WriteLine($"POST REST: {(int)response.StatusCode}");
-    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    Console.WriteLine("Productos por REST:");
+    foreach (var producto in productos ?? [])
+    {
+        Console.WriteLine($"{producto.Id}: {producto.Nombre} - {producto.Precio:C}");
+    }
+
+    if (args.Contains("--crear"))
+    {
+        var response = await http.PostAsJsonAsync("/api/productos", new ProductoInput("Producto .NET", "Creado desde consola", 25.50m, 7));
+        Console.WriteLine($"POST REST: {(int)response.StatusCode}");
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+    }
 }
 
 if (args.Contains("--grpc-listar"))

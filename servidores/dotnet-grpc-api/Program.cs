@@ -1,8 +1,16 @@
 using System.Collections.Concurrent;
 using Arquitectura.DotnetGrpcApi;
 using Grpc.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureEndpointDefaults(listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+});
 builder.Services.AddGrpc();
 builder.Services.AddSingleton<ProductoMemoryStore>();
 

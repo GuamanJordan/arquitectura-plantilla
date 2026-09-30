@@ -36,13 +36,16 @@ hostname -I
 docker compose up -d
 ```
 
-En la computadora cliente, editar `.env`:
+En la computadora cliente:
 
-```env
-SERVER_HOST=192.168.1.50
+```bash
+cp .env.example .env
+./scripts/configurar-cliente.sh 192.168.1.50
+./scripts/probar-red.sh 192.168.1.50
+./scripts/levantar-clientes.sh 192.168.1.50
 ```
 
-Luego ejecutar clientes usando esa IP.
+Luego ejecutar clientes usando esa IP. El proceso completo esta en `docs/12-modo-cliente-servidor.md`.
 
 ## Modulos
 
