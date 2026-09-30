@@ -1,0 +1,33 @@
+.env
+.idea/
+.vscode/
+
+# Build outputs
+target/
+bin/
+obj/
+.gradle/
+build/
+node_modules/
+
+# Generated packages
+*.war
+*.jar
+*.apk
+*.aab
+*.ipa
+
+# Heavy/local runtime files
+*.iso
+*.zip
+*.tar
+*.tar.gz
+*.bak
+*.db
+*.sqlite
+docker-data/
+volumes/
+
+# OS
+.DS_Store
+Thumbs.db

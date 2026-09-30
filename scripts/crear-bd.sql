@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS arquitectura;
+CREATE DATABASE IF NOT EXISTS arquitectura_mysql;

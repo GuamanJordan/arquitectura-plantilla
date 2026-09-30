@@ -1,0 +1,16 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "ec.edu.arquitectura.movil"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "ec.edu.arquitectura.movil"
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+    }
+}

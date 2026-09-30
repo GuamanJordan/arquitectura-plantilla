@@ -1,0 +1,49 @@
+{
+  "info": {
+    "name": "Arquitectura Plantilla",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "dotnet_rest",
+      "value": "http://localhost:5100"
+    },
+    {
+      "key": "jakarta_rest",
+      "value": "http://localhost:8082/jakarta-rest-glassfish"
+    }
+  ],
+  "item": [
+    {
+      "name": "Listar productos .NET REST",
+      "request": {
+        "method": "GET",
+        "url": "{{dotnet_rest}}/api/productos"
+      }
+    },
+    {
+      "name": "Crear producto .NET REST",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\":\"Tablet\",\"descripcion\":\"Postman\",\"precio\":199.99,\"stock\":4}"
+        },
+        "url": "{{dotnet_rest}}/api/productos"
+      }
+    },
+    {
+      "name": "Listar productos Jakarta REST",
+      "request": {
+        "method": "GET",
+        "url": "{{jakarta_rest}}/api/productos"
+      }
+    }
+  ]
+}

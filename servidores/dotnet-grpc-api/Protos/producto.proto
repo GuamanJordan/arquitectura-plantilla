@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option csharp_namespace = "Arquitectura.DotnetGrpcApi";
+
+package productos;
+
+service ProductoService {
+  rpc ListarProductos (ListarProductosRequest) returns (ListarProductosResponse);
+  rpc BuscarProducto (BuscarProductoRequest) returns (ProductoReply);
+  rpc CrearProducto (CrearProductoRequest) returns (ProductoReply);
+}
+
+message ListarProductosRequest {}
+
+message BuscarProductoRequest {
+  int64 id = 1;
+}
+
+message CrearProductoRequest {
+  string nombre = 1;
+  string descripcion = 2;
+  double precio = 3;
+  int32 stock = 4;
+}
+
+message ProductoReply {
+  int64 id = 1;
+  string nombre = 2;
+  string descripcion = 3;
+  double precio = 4;
+  int32 stock = 5;
+  bool encontrado = 6;
+}
+
+message ListarProductosResponse {
+  repeated ProductoReply productos = 1;
+}

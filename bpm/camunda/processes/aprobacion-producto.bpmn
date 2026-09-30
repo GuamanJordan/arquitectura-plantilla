@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_AprobacionProducto" targetNamespace="http://arquitectura.edu.ec/bpmn">
+  <bpmn:process id="aprobacion-producto" name="Aprobacion de producto" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_ProductoCreado" name="Producto creado">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_RevisarProducto" name="Revisar producto">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Aprobado" name="Aprobado?">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_ActivarProducto" name="Activar producto">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Activo" name="Producto activo">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_Rechazado" name="Producto rechazado">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_ProductoCreado" targetRef="Task_RevisarProducto" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_RevisarProducto" targetRef="Gateway_Aprobado" />
+    <bpmn:sequenceFlow id="Flow_3" name="Si" sourceRef="Gateway_Aprobado" targetRef="Task_ActivarProducto" />
+    <bpmn:sequenceFlow id="Flow_4" name="No" sourceRef="Gateway_Aprobado" targetRef="EndEvent_Rechazado" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_ActivarProducto" targetRef="EndEvent_Activo" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_AprobacionProducto">
+    <bpmndi:BPMNPlane id="BPMNPlane_AprobacionProducto" bpmnElement="aprobacion-producto" />
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
